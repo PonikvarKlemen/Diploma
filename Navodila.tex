@@ -15,6 +15,7 @@
 \usepackage[pdftex]{UNI-LJ-FE-Diploma} %Stil za diplome na Fakulteti za elektrotehniko (za pdfTeX v MkiTex)
 %\usepackage[pctex]{UNI-LJ-FE-Diploma} %Stil za diplome na Fakulteti za elektrotehniko  (za pcTex)
 
+
 %*************************** PRILAGODITVE *****************************
 % mapa s slikami
 \potgrafike{./Slike/}
@@ -142,6 +143,71 @@ seznamu uporabljenih virov, in po potrebi navede strani, npr.
 534]{juvznivc1992diplomska}.
 
 %*********************** OSREDNJA POGLAVJA ********************************
+\chapter{Laboratorijski model} \label{opis_lab_modela}
+
+
+Moènostno vezje, služi kot uèni model za spoznavanje in analizo razliènih topologij moènostnih presmernikov v okviru laboratorijskih vaj pri predmetu Elektriène napajalne naprave na 2. stopnji univerzitetnega študija elektrotehnike.Uèni model lahko funkcijsko razdelimo na moènostni del ter na nadzorno elektronsko vezje. Krmilna signala, ki prožita tranzistorja stikalne celice, se generirata na samostojni tiskanini (regulacijsko vezje), ki se na osrednjo vezje prikljuèi preko 32-pinskega konektorja (CONN1).
+
+\section{Moènostni del}\label{mocnostni del}
+Moènostni del sestoji iz enosmernega vmesnega tokokroga, polja za pritrditev magnetnih komponent, razbremenilnih vezij, usmerniških in prostoteènih vej, stikalne celice in izhodnega sklopa. \par 
+Enosmerni vmesni tokokrog je namenjen prikljuèitvi enosmerne napetosti v obmoèju do 100 V. Za dodatno glajenje napetosti je dodan kondenzator $ C_{vh1} $. Taljiva varovalka F1 (10 A) služi zašèiti vezja pred termièno preobremenitvijo, ki pa zaradi relativno poèasnega odzivnega èasa ne zadošèa za popolno nadtokovno zašèito elektronskih komponent. Slednjo zagotovi nadzorno elektronsko vezje v kombinaciji s krmilno-regulacijskim vezjem. \par
+Stikalno celico sestavljajo dva moènostna tranzistorja (Q1 in Q2), in diodi (D1, D2), ki jih lahko preko povezovalnega polja povežemo v poljubno topologijo.  Tako sestavljeno stikalno celico vežemo preko pet toèkovnega pritrditvenega polja s poljubno topologijo magnetnih komponent, usmerniških in prostoteènih vej in razbremenilnih vezij. Za potrebe laboratorijskih vaj so komponente, potrebne za sestavo posameznega pretvorniškega vezja, zbrane na tiskanini, ki se jo preprosto pritrdi na osnovni model. Tiskanine so vidne na sliki (slikaj in dej referenco od slike). Omogoèeno je preuèevanje buck, boost, buck-boost, flyback in forward pretvornika.\par
+Izhodni sklop je namenjen vezavi bremena(ohmskega drsnika). Breme vežemo na sponki oznaèeni z P4 - P9.Vzporedno bremenu je vezan elektrolistski kondenzator. Kapacitivnost gladilnega kondenzatorja lahko poveèamo in posledièno zmanjšamo valovitost izhodnega toka z dodatnim kondenzatorjem, ki ga pritrdimo na sponke K7 - K9.  Za namen merjenja toka skozi kondenzatorski sklop z uporabo tokovnih klešè sta sponki K8, K7 kratkostièeni. Napetost bremena, zaradi nazivne vrednosti izbranega gladilnega kondenzatorja ne sme preseèi 100 V. V ta namen, vrednost bremenske napetosti $ U_izh* $ v razmerju 100 V/10 V posredujemo, nadzornemu vezju, ki pri prekoraèitvi mejne vrednosti prepreèi nadaljnjo proženje tranzistorjev. Poleg signala napetosti na bremenu, posredujemo nadzornemu vezju tudi signal izhodnega toka Iizh* za katerega velja enako prestavno razmerje in omejitve kot tok merjen na vhodu stikalne celice (Ivh*).
+
+\section{Elektronsko nadzorno vezje}\label{nadzorno_vezje}
+Nadzorno elektronsko vezje je razdeljeno na veè podenot:
+\begin{itemize}
+\item Vezje za pretvorbo signalov tokovnih merilnikov vhodnega in izhodnega toka (Iin, Iout) v napetostne
+ekvivalente (Iin*, Iout*) in napetostno prilagoditev signala bremenske napetosti (Uout*). Vezje prav tako
+vrši delno detekcijo prekoraèitve mejnih vrednosti merjenih signalov, kar se CPLD vezju posreduje v obliki
+napetostnih signalov (Iin{\_}over, Iout{\_} over, Uout{\_} over). 
+
+\item Osrednje logièno vezje, realizirano v CPLD (complex programmable logic device) vezju, opravlja funkcijo nadtokovne in prenapetostne zašèite elementov moènostnega vezja.
+
+\item Prožilno vezje generira prožilne signale ustrezne napetosti za proženje moènostnih tranzistorjev.
+
+\item Vezje za prilagoditev napetostnih nivojev binarnih signalov Tlo*, Thi*, ki se generirajo na krmilno regulacijskem vezju, iz obmoèja 0 V/15 V v obmoèje 0 V/5 V. 
+
+\end{itemize}
+Shema nadzornega vezja je prikazana na sliki dej referenco. Poleg imena signala je oznaèen tudi njihov razpon. 
+
+\subsection{Zajem in obdelava signalov tokovnih merilnikov in izhodne napetosti}
+
+Vhodni (Iin) in izhodni tok (Iout) se merita s kompenziranima tokovnima sondama (LA 25-NP) z galvansko loèitvijo med merjenim in merilnim tokokrogom TS1 in TS2. V izbrani vezavi vhodnih sponk merilnika, znaša prestavno razmerje med merjenim in merilnim tokokrogom 3/1000. Kot vidimo na sliki 2.3, zaradi lažje obdelave, signalom toka Iin in Iout priredimo napetostni ekvivalent z merilnima uporoma R19, R26 v vrednosti 160~$  {\Omega}$. Signala toka nato nivojsko prilagodimo z elektrometerskima ojaèevalnikoma z zaprtozanènim ojaèanjem 2.
+
+
+\begin{table}[h]
+	\centering
+	\caption{Razporeditev signalov na prikljuèku CONN1}
+	\label{razporeditev_signalov}
+	\begin{footnotesize}
+		\begin{tabular}{|c c c l|}
+			\hline 
+			št. pina 	& signal 		& obmoèje napetosti & OPIS\\
+			(CONN1)		& (oznaka)		& (min/max) [V]		&\\
+			\hline \hline
+			(1--2) 		& GND  			& $×$ 				& referenèna toèka vezja**\\
+			(3--4) 		& T\underline{{ }}hi*&  0/$ -15 $ 	& signal, ki proži tranzistor T1\\
+			(5--6) 		& T\underline{{ }}lo*&  0/$ +15 $	& signal, ki proži tranzistor T2\\
+			(7--8) 		& GND 			& $×$ 				& ** \\
+			(9--10)		& $×$ 			& brez povezave 	& $×$ \\
+			(11--12)	& $×$ 			& brez povezave 	& $×$ \\
+			(13--14) 	& Vcc$+$ 		& $+15$  			& napajanje \\
+			(15--16) 	& Vcc$-$ 		& $-15$ 			& napajanje \\
+			(17--18) 	& Uout* 		&0/$+10$ 			& izhodna napetost \\
+			(19--20) 	& $×$  			& brez povezave 	& $×$  \\
+			(21--22) 	&  $×$  		& brez povezave 	& **  \\
+			(23--24) 	&  Iin* 		& $-12$/$+12$ 		& napetostni ekvivalent Iin [TS1]\\
+			(25--26) 	&  $×$  		& brez povezave 	& **  \\
+			(27--28) 	&  Iout* 		& $- 12$/$+12$ 		& napetostni ekvivalent Iout [TS1]\\
+			
+			 
+			\hline
+		\end{tabular}
+	\end{footnotesize}
+\end{table}
+
+
 \chapter{Izbira teme zakljuènega dela} \label{izbira_teme}
 
 \begin{enumerate}
